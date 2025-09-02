@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  taskapp-api:
+    build:
+      context: .
+      dockerfile: src/TaskApp.WepApi/Dockerfile
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    depends_on:
+      - taskapp-sql
+
+  taskapp-sql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "Your_password123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1434:1433"
+    volumes:
+      - taskapp_sql_data:/var/opt/mssql
+
+volumes:
+  taskapp_sql_data:
